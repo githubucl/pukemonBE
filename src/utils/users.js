@@ -1,6 +1,6 @@
-const users = [];
+const Users = require("../models/user");
 
-const addUser = ({ id, username, room }) => {
+const addUser = async ({ id, username, room }) => {
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
@@ -10,40 +10,30 @@ const addUser = ({ id, username, room }) => {
     };
   }
 
-  const existingUser = users.find((user) => {
-    return user.room === room && user.username === username;
-  });
+  const existingUser = await Users.findOne({ username });
 
   if (existingUser) {
     return {
       error: "Usrename is in use!",
     };
   }
-  const user = { id, username, room };
-  users.push(user);
+  const user = new Users({ id, username, room });
+  await user.save();
   return { user };
 };
 
-const removeUser = (id) => {
-  const userIndex = users.findIndex((user) => user.id === id);
-
-  if (userIndex !== -1) {
-    return users.splice(userIndex, 1)[0];
-  }
+const removeUser = async (id) => {
+  await Users.deleteOne({ id });
 };
 
-const getUser = (id) => {
-  return users.find((user) => {
-    return user.id === id;
-  });
+const getUser = async (id) => {
+  const existingUser = await Users.findOne({ id });
+  return existingUser;
 };
 
-const getUsersInRoom = (room) => {
-  room = room.trim().toLowerCase();
-
-  return users.filter((user) => {
-    return user.room === room;
-  });
+const getUsersInRoom = async (room) => {
+  const usersInRoom = await Users.find({ room });
+  return usersInRoom;
 };
 
 module.exports = {

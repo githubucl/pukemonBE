@@ -25,8 +25,8 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("new websocket connection");
 
-  socket.on("join", (options, callback) => {
-    const { error, user } = addUser({ id: socket.id, ...options });
+  socket.on("join", async (options, callback) => {
+    const { error, user } = await addUser({ id: socket.id, ...options });
     if (error) {
       return callback(error);
     }
@@ -35,10 +35,7 @@ io.on("connection", (socket) => {
     socket.emit("message", generateMessage(`welcome ${user.username}`));
     socket.broadcast
       .to(user.room)
-      .emit(
-        "message",
-        generateMessage(`${user.username} has join the chat room`)
-      );
+      .emit("message", generateMessage(`${user.username} has join the table`));
 
     io.to(user.room).emit("roomData", {
       room: user.room,
@@ -74,7 +71,7 @@ io.on("connection", (socket) => {
 
   socket.on("send-location", (coordinates, callback) => {
     const user = getUser(socket.id);
-    console.log(user);
+
     io.to(user.room).emit(
       "location-message",
       generateMessage(
