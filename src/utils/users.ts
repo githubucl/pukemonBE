@@ -1,6 +1,14 @@
-const Users = require("../models/user");
+import { Users } from "../models/user";
 
-const addUser = async ({ id, username, room }) => {
+export const addUser = async ({
+  id,
+  username,
+  room,
+}: {
+  id: string;
+  username: string;
+  room: string;
+}) => {
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
@@ -22,23 +30,17 @@ const addUser = async ({ id, username, room }) => {
   return { user };
 };
 
-const removeUser = async (id) => {
-  await Users.deleteOne({ id });
+export const removeUser = async (id: string) => {
+  const user = await Users.findOneAndDelete({ id });
+  return user;
 };
 
-const getUser = async (id) => {
+export const getUser = async (id: string) => {
   const existingUser = await Users.findOne({ id });
   return existingUser;
 };
 
-const getUsersInRoom = async (room) => {
+export const getUsersInRoom = async (room: string) => {
   const usersInRoom = await Users.find({ room });
   return usersInRoom;
-};
-
-module.exports = {
-  addUser,
-  removeUser,
-  getUser,
-  getUsersInRoom,
 };
