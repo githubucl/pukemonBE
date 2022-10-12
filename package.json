@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "db": "/Users/Chris/Desktop/DataBase/mongodb/bin/mongod --dbpath=/Users/Chris/Desktop/DataBase/pukemon-data",
+    "kill": "sudo killall mongod"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +16,7 @@
     "bad-words": "^3.0.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
+    "mongoose": "^6.6.5",
     "path": "^0.12.7",
     "socket.io": "^4.5.1"
   },
