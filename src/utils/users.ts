@@ -24,8 +24,10 @@ export const addUserToRoom = async ({
 
   //if there is NO exsiting room then we need to create a new room
   if (!existingRoom) {
-    const newRoom = new Rooms({ room, users: [user] });
+    const newRoom = new Rooms({ room, users: [user], poolAmount: 0 });
+
     await newRoom.save();
+
     return;
   }
 
@@ -88,7 +90,7 @@ export const removeUser = async (id: string) => {
 };
 
 export const getRoomFromRoomName = async (roomName: string) => {
-  return await Rooms.findOne({ roomName });
+  return await Rooms.findOne({ room: roomName });
 };
 
 export const getRoomFromSocketId = async (id: string) => {
