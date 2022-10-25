@@ -11,9 +11,7 @@ import {
   addUserToRoom,
   getRoomFromRoomName,
   getRoomFromSocketId,
-  getUsersInRoom,
   disconnectUser,
-  removeUser,
 } from "./utils/users";
 import "./db/mongoose";
 import { TUser, TRoomOptions } from "./type/types";
@@ -61,7 +59,6 @@ io.on("connection", (socket) => {
     const user = room?.users.find((user: TUser) => user.id === socket.id);
 
     if (room) {
-      console.log(user.username);
       io.to(room.room).emit("message", generateMessage(message, user.username));
       callback();
     }
@@ -82,20 +79,6 @@ io.on("connection", (socket) => {
       // });
     }
   });
-
-  // socket.on("send-location", async (coordinates, callback) => {
-  //   const user = await getUser(socket.id);
-  //   if (user) {
-  //     io.to(user.room).emit(
-  //       "location-message",
-  //       generateMessage(
-  //         `https://www.google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`,
-  //         user.username
-  //       )
-  //     );
-  //     callback();
-  //   }
-  // });
 });
 server.listen(port, () => {
   console.log("app is successfully running on port", port);

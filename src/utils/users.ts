@@ -51,8 +51,14 @@ export const addUserToRoom = async ({
 
     //if user is already in the room but his status is offline then we want to update his status to online
     await Rooms.findOneAndUpdate(
-      { room, "users.username": username },
-      { $set: { "users.$.onLine": true } }
+      // { room, "users.username": username },
+      {
+        users: {
+          $elemMatch: { username },
+        },
+        room,
+      },
+      { $set: { "users.$.onLine": true, "users.$.id": id } }
     );
   } catch (err) {
     if (err instanceof Error.ValidationError) {
