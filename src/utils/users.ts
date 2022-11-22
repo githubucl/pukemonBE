@@ -19,24 +19,24 @@ export const addUserToRoom = async ({
       error: "username and room are a must",
     };
   }
-  const existingRoom = await Rooms.findOne({ room });
-  const user = { id, username, onLine: true };
-
-  //if there is NO exsiting room then we need to create a new room
-  if (!existingRoom) {
-    const newRoom = new Rooms({ room, users: [user], poolAmount: 0 });
-
-    await newRoom.save();
-
-    return;
-  }
-
-  //User previously in the room but might have lost internet connection
-  const exsitingUser = existingRoom.users.find(
-    (user: { username: string }) => user.username === username
-  );
-
   try {
+    const existingRoom = await Rooms.findOne({ room });
+    const user = { id, username, onLine: true, stake: 1000, totalBuyIn: 1000 };
+
+    //if there is NO exsiting room then we need to create a new room
+    if (!existingRoom) {
+      const newRoom = new Rooms({ room, users: [user], pot: 0, smallBlind: 5 });
+
+      await newRoom.save();
+
+      return;
+    }
+
+    //User previously in the room but might have lost internet connection
+    const exsitingUser = existingRoom.users.find(
+      (user: { username: string }) => user.username === username
+    );
+
     //if theres no exsiting users in the room we create one
     if (!exsitingUser) {
       existingRoom.users.push(user);

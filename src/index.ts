@@ -1,7 +1,8 @@
 import express from "express";
-
 import http from "http";
+
 const app = express();
+
 const port = process.env.PORT || 3001;
 const server = http.createServer(app);
 import { Server } from "socket.io";
@@ -54,14 +55,20 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("message", async (message, callback) => {
+  socket.on("chipAction", async (value, callback) => {
     const room = await getRoomFromSocketId(socket.id);
-    const user = room?.users.find((user: TUser) => user.id === socket.id);
+    if (!room) return callback("room not found");
+    const user = room.users.find((user: TUser) => user.id === socket.id);
+    user.stake = Number(user.stake) + Number(value);
+    room.save();
 
-    if (room) {
-      io.to(room.room).emit("message", generateMessage(message, user.username));
-      callback();
-    }
+    io.to(room.room).emit(
+      "message",
+      generateMessage(
+        `${user.username} ${value < 0 ? "betted" : "took"} ${value} dollars`
+      )
+    );
+    callback();
   });
 
   socket.on("disconnect", async () => {

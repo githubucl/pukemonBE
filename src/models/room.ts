@@ -17,6 +17,11 @@ const userSchema: Schema = new Schema({
     type: Boolean,
     required: true,
   },
+  stake: {
+    type: Number,
+    required: true,
+  },
+  totalBuyIn: { type: Number, required: true },
 });
 const roomSchema: Schema = new Schema({
   users: {
@@ -31,7 +36,7 @@ const roomSchema: Schema = new Schema({
       },
     },
   },
-  poolAmount: {
+  pot: {
     type: Number,
   },
   room: {
@@ -39,6 +44,10 @@ const roomSchema: Schema = new Schema({
     required: true,
     trim: true,
     lowercase: true,
+  },
+  smallBlind: {
+    type: Number,
+    required: true,
   },
 });
 
