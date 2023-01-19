@@ -37,37 +37,48 @@ io.on("connection", (socket) => {
     const user: TUser = usersInRoom.find(
       (user: TUser) => user.id === socket.id
     );
-    if (user && room) {
-      socket.join(room);
-      socket.emit("message", generateMessage(`welcome ${user.username}`));
-      socket.broadcast
-        .to(room)
-        .emit(
-          "message",
-          generateMessage(`${user.username} has join the table`)
-        );
-
-      // io.to(room).emit("roomData", {
-      //   room,
-      //   users: getUsersInRoom(user.room),
-      // });
-      callback();
+    if (!user || !room) {
+      return;
     }
+    socket.join(room);
+    socket.emit("message", generateMessage(`welcome ${user.username}`));
+    socket.broadcast
+      .to(room)
+      .emit("message", generateMessage(`${user.username} has join the table`));
+
+    // io.to(room).emit("roomData", {
+    //   room,
+    //   users: getUsersInRoom(user.room),
+    // });
+
+    io.to(room).emit("potUpdate", {
+      pot: roomInfo.pot,
+      users: roomInfo.users,
+    });
+    callback();
   });
 
   socket.on("chipAction", async (value, callback) => {
-    const room = await getRoomFromSocketId(socket.id);
-    if (!room) return callback("room not found");
-    const user = room.users.find((user: TUser) => user.id === socket.id);
-    user.stake = Number(user.stake) + Number(value);
-    room.save();
+    const roomInfo = await getRoomFromSocketId(socket.id);
+    if (!roomInfo) return callback("room not found");
+    const user = roomInfo.users.find((user: TUser) => user.id === socket.id);
+    user.stake = Number(user.stake) - Number(value);
+    roomInfo.pot += Number(value);
+    roomInfo.save();
 
-    io.to(room.room).emit(
+    io.to(roomInfo.room).emit(
       "message",
       generateMessage(
-        `${user.username} ${value < 0 ? "betted" : "took"} ${value} dollars`
+        `${user.username} ${value > 0 ? "betted" : "took"} ${Math.abs(
+          value
+        )} dollars`
       )
     );
+
+    io.to(roomInfo.room).emit("potUpdate", {
+      pot: roomInfo.pot,
+      users: roomInfo.users,
+    });
     callback();
   });
 

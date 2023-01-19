@@ -11,14 +11,14 @@ export const addUserToRoom = async ({
   username: string;
   room: string;
 }) => {
+  if (!username || !room) {
+    return {
+      error: "username and room are must",
+    };
+  }
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
-  if (!username || !room) {
-    return {
-      error: "username and room are a must",
-    };
-  }
   try {
     const existingRoom = await Rooms.findOne({ room });
     const user = { id, username, onLine: true, stake: 1000, totalBuyIn: 1000 };
