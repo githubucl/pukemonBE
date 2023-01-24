@@ -5,21 +5,26 @@ const app = express();
 
 const port = process.env.PORT || 3001;
 const server = http.createServer(app);
-import { Server } from "socket.io";
+
 import cors from "cors";
-import { generateMessage } from "./utils/message";
+import { generateMessage } from "./utils/message.js";
 import {
   addUserToRoom,
   getRoomFromRoomName,
   getRoomFromSocketId,
   disconnectUser,
-} from "./utils/users";
+} from "./utils/users.js";
 import "./db/mongoose";
-import { TUser, TRoomOptions } from "./type/types";
+import { TUser, TRoomOptions } from "./type/types.js";
 app.use(cors());
-const io = new Server(server, {
+
+/* eslint-disable @typescript-eslint/no-var-requires */
+const io = require("socket.io")(server, {
   cors: {
     origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
   },
 });
 

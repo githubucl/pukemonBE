@@ -1,5 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose";
-
+import "dotenv/config";
 const connectionURL = `mongodb+srv://${process.env.MONGODB_CREDENTIALS}@pukemon.bgib8be.mongodb.net/?retryWrites=true&w=majority`;
 mongoose
   .connect(connectionURL, {

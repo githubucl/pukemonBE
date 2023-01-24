@@ -1,6 +1,6 @@
 import { Error } from "mongoose";
-import { Users } from "../models/user";
-import { Rooms } from "../models/room";
+import { Users } from "../models/user.js";
+import { Rooms } from "../models/room.js";
 
 export const addUserToRoom = async ({
   id,
