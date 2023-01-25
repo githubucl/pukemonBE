@@ -2,11 +2,11 @@ import express from "express";
 import http from "http";
 
 const app = express();
-
+import { router } from "./handlers/routers";
 const port = process.env.PORT || 3001;
 const server = http.createServer(app);
+app.use(router);
 
-import cors from "cors";
 import { generateMessage } from "./utils/message.js";
 import {
   addUserToRoom,
@@ -16,7 +16,6 @@ import {
 } from "./utils/users.js";
 import "./db/mongoose";
 import { TUser, TRoomOptions } from "./type/types.js";
-app.use(cors());
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const io = require("socket.io")(server, {

@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const app = (0, express_1.default)();
+const routers_1 = require("./handlers/routers");
 const port = process.env.PORT || 3001;
 const server = http_1.default.createServer(app);
-const cors_1 = __importDefault(require("cors"));
+app.use(routers_1.router);
 const message_js_1 = require("./utils/message.js");
 const users_js_1 = require("./utils/users.js");
 require("./db/mongoose");
-app.use((0, cors_1.default)());
 /* eslint-disable @typescript-eslint/no-var-requires */
 const io = require("socket.io")(server, {
     cors: {
