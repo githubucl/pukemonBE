@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateMessage = void 0;
-const generateMessage = (text, username) => {
+const generateMessage = (content, username) => {
     return {
-        text,
+        content,
         username: username ?? "性感荷官",
         createdAt: new Date().getTime(),
     };

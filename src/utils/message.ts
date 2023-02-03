@@ -1,6 +1,6 @@
-export const generateMessage = (text: string, username?: string) => {
+export const generateMessage = (content: string, username?: string) => {
   return {
-    text,
+    content,
     username: username ?? "性感荷官",
     createdAt: new Date().getTime(),
   };

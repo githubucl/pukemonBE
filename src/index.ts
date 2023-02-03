@@ -19,12 +19,7 @@ import { TUser, TRoomOptions } from "./type/types.js";
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    // methods: ["GET", "POST"],
-    // allowedHeaders: ["my-custom-header"],
-    // credentials: true,
-  },
+  cors: { origin: "*" },
 });
 
 io.on("connection", (socket) => {

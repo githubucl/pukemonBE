@@ -15,12 +15,7 @@ const users_js_1 = require("./utils/users.js");
 require("./db/mongoose");
 /* eslint-disable @typescript-eslint/no-var-requires */
 const io = require("socket.io")(server, {
-    cors: {
-        origin: "*",
-        // methods: ["GET", "POST"],
-        // allowedHeaders: ["my-custom-header"],
-        // credentials: true,
-    },
+    cors: { origin: "*" },
 });
 io.on("connection", (socket) => {
     console.log("new websocket connection");
