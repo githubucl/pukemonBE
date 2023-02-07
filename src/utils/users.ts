@@ -45,11 +45,11 @@ export const addUserToRoom = async ({
     }
 
     //if user is already in the room and he's status is online then we want to return error message
-    if (exsitingUser.onLine) {
-      return {
-        error: `User ${username} is still online!`,
-      };
-    }
+    // if (exsitingUser.onLine) {
+    //   return {
+    //     error: `User ${username} is still online!`,
+    //   };
+    // }
 
     //if user is already in the room but his status is offline then we want to update his status to online
     await Rooms.findOneAndUpdate(
