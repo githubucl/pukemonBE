@@ -20,5 +20,15 @@
     "titleBar.inactiveBackground": "#0d274c99",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#0d274c"
+  "peacock.color": "#0d274c",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*.js.map": {
+      "when": "$(basename)"
+    }
+  }
 }
