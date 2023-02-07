@@ -52,12 +52,15 @@ io.on("connection", (socket) => {
             return callback("room not found");
         const user = roomInfo.users.find((user) => user.id === socket.id);
         user.stake = Number(user.stake) - Number(value);
+        user.roundBet = Number(user.roundBet) + Number(value);
         roomInfo.pot += Number(value);
+        roomInfo.highestBet = roomInfo.users.reduce((a, b) => a.roundBet > b.roundBet ? a : b).roundBet;
         roomInfo.save();
         io.to(roomInfo.room).emit("message", (0, message_js_1.generateMessage)(`${user.username} ${value > 0 ? "betted" : "took"} ${Math.abs(value)} dollars`));
         io.to(roomInfo.room).emit("potUpdate", {
             pot: roomInfo.pot,
             users: roomInfo.users,
+            highestBet: roomInfo.highestBet,
         });
         callback();
     });

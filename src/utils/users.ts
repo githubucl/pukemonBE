@@ -21,11 +21,23 @@ export const addUserToRoom = async ({
 
   try {
     const existingRoom = await Rooms.findOne({ room });
-    const user = { id, username, onLine: true, stake: 1000, totalBuyIn: 1000 };
+    const user = {
+      id,
+      username,
+      onLine: true,
+      stake: 1000,
+      totalBuyIn: 1000,
+      roundBet: 0,
+    };
 
     //if there is NO exsiting room then we need to create a new room
     if (!existingRoom) {
-      const newRoom = new Rooms({ room, users: [user], pot: 0, smallBlind: 5 });
+      const newRoom = new Rooms({
+        room,
+        users: [user],
+        pot: 0,
+        highestBet: 0,
+      });
 
       await newRoom.save();
 
@@ -52,6 +64,7 @@ export const addUserToRoom = async ({
     // }
 
     //if user is already in the room but his status is offline then we want to update his status to online
+
     await Rooms.findOneAndUpdate(
       // { room, "users.username": username },
       {

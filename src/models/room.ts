@@ -21,6 +21,10 @@ const userSchema: Schema = new Schema({
     type: Number,
     required: true,
   },
+  roundBet: {
+    type: Number,
+    required: true,
+  },
   totalBuyIn: { type: Number, required: true },
 });
 const roomSchema: Schema = new Schema({
@@ -45,7 +49,7 @@ const roomSchema: Schema = new Schema({
     trim: true,
     lowercase: true,
   },
-  smallBlind: {
+  highestBet: {
     type: Number,
     required: true,
   },

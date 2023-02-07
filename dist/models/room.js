@@ -23,6 +23,10 @@ const userSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
     },
+    roundBet: {
+        type: Number,
+        required: true,
+    },
     totalBuyIn: { type: Number, required: true },
 });
 const roomSchema = new mongoose_1.Schema({
@@ -47,7 +51,7 @@ const roomSchema = new mongoose_1.Schema({
         trim: true,
         lowercase: true,
     },
-    smallBlind: {
+    highestBet: {
         type: Number,
         required: true,
     },
